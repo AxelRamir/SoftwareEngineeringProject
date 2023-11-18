@@ -50,7 +50,7 @@ public class GameClientGUI2 extends JFrame {
 	private JTextArea serverArea = new JTextArea();
 	
 	//lab3out
-	private GameClient client = new GameClient();
+	private GameClient client = new GameClient("localhost", 8300);
 
 	public GameClientGUI2() {
 		int i = 0;
@@ -201,8 +201,8 @@ public class GameClientGUI2 extends JFrame {
 			}
 			else if(obj == submit) {
 				try {
-					//LoginData data = new LoginData("jjones@yahoo.com", "hello1234hu");
-					CreateAccountData data = new CreateAccountData("random2@yahoo.com", "hello", "hello");
+					//LoginData data = new LoginData("jjones@yahoo.com", "hello1234");
+					CreateAccountData data = new CreateAccountData("random5@yahoo.com", "hello", "hello");
 					client.sendToServer(data);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

@@ -1,5 +1,6 @@
 package ClientCommunications;
 
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,10 +20,27 @@ public class HomeControl implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		HomePanel homePanel = (HomePanel) container.getComponent(1);
-		if(e.getActionCommand() == "CreateAccount") {
+		HomePanel homePanel = (HomePanel) container.getComponent(0);
+		CardLayout cardLayout = (CardLayout) container.getLayout();
+		
+		if(e.getActionCommand() == "Create Account") {
+			try {
+				client.openConnection();
+				cardLayout.show(container, "3");
+				homePanel.getConnectionLabel().setText("");
+			}catch (Exception ex) {
+				homePanel.getConnectionLabel().setText("Failed to connect to server");
+			}
+			
 		}
 		else if(e.getActionCommand() == "Login") {
+			try {
+				client.openConnection();
+				cardLayout.show(container, "2");
+				homePanel.getConnectionLabel().setText("");
+			}catch (Exception ex) {
+				homePanel.getConnectionLabel().setText("Failed to connect to server.");
+			}
 		}
 	}
 }

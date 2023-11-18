@@ -72,8 +72,14 @@ public class Database {
 		}
 	}
 	
-	public void executeDML(String dml) throws Exception{
-		stmt = conn.createStatement();
-		stmt.executeUpdate(dml);
+	public boolean executeDML(String dml) {
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate(dml);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
 	}
 }

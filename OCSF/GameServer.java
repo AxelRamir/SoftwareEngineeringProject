@@ -178,6 +178,18 @@ public class GameServer extends AbstractServer {
 	
 	//functions for CreateAccountData
 	private boolean validCreateAccount(CreateAccountData data) {
+		//first we have to validate the password and username
+		boolean inserted = false;
+		if(!data.getUsername().contains("@")) {
+			//doesnt contain an @
+			message = "Username requires an @ symbol";
+			return false;
+		}
+		if(data.getPassword().length() < 8) {
+			message = "Password needs at least 8 characters";
+			return false;
+		}
+		
 		String query = "Select * from users where username = \'" + data.getUsername() + "\'";
 		ArrayList<String> results = null;
 		results = database.query(query);
@@ -197,13 +209,16 @@ public class GameServer extends AbstractServer {
 			//if the passwords match and the username is not taken, add the user to the database
 			String DML = "insert into users values(\'" + data.getUsername() + "\' , aes_encrypt(\'" + data.getPassword() + "\', \'hello\'))";
 			try {
-				database.executeDML(DML);
+				inserted = database.executeDML(DML);
 				System.out.println("User added to database");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return true;
+			if(!inserted) {
+				message = "There was an issue creating the account";
+			}
+			return inserted;
 		}
 	}
 	

@@ -6,7 +6,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import ClientCommunications.InitialControl;
+import ClientCommunications.CreateAccountControl;
+import ClientCommunications.LoginControl;
 import ServerCommunication.InvalidLogin;
 import ServerCommunication.LoginData;
 import ServerCommunication.UnsuccessfulCreateAccount;
@@ -14,10 +15,11 @@ import ocsf.client.AbstractClient;
 
 public class GameClient extends AbstractClient {
 	//controllers for the GUIS
-	private InitialControl initialControl;
+	private LoginControl loginControl;
+	private CreateAccountControl createAccountControl;
 	
-	public GameClient() {
-		super("localhost", 8300);
+	public GameClient(String host, int port) {
+		super(host, port);
 	}
 	
 	public void connectionEstablished() {
@@ -33,19 +35,23 @@ public class GameClient extends AbstractClient {
 		
 		if(arg0 instanceof InvalidLogin) {
 			InvalidLogin invalidLogin = (InvalidLogin) arg0;
-			System.out.println(invalidLogin.getErrorMessage());
+			loginControl.loginFailed(invalidLogin.getErrorMessage());
 		}
 		if(arg0 instanceof UnsuccessfulCreateAccount) {
 			UnsuccessfulCreateAccount unsuccessfulCreateAccount = (UnsuccessfulCreateAccount) arg0;
-			System.out.println(unsuccessfulCreateAccount.getErrorMessage());
+			createAccountControl.createFailed(unsuccessfulCreateAccount.getErrorMessage());
 		}
 	}
 	
 	public void connectionClosed() {
 		
 	}
-	
-	public void setInitialControl(InitialControl initialControl) {
-		this.initialControl = initialControl;
+
+	public void setCreateAccountControl(CreateAccountControl cac) {
+		this.createAccountControl = cac;
 	}
+	public void setLoginControl(LoginControl lc) {
+		this.loginControl = lc;
+	}
+	
 }

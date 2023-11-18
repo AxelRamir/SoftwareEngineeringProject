@@ -1,36 +1,53 @@
 package ClientCommunications;
 
 import java.awt.CardLayout;
+import java.io.IOException;
 
 import javax.swing.*;
 
+import ClientUserInterface.CreateAccountPanel;
 import ClientUserInterface.HomePanel;
-import ClientUserInterface.InitialPanel;
+import ClientUserInterface.LoginPanel;
 import OCSF.GameClient;
 
 public class GameClientGUI extends JFrame{
 	private GameClient client; 
 	
-	public GameClientGUI() {
+
+	private CardLayout cardLayout = new CardLayout();
+	private JPanel container = new JPanel(cardLayout);
+	
+	public GameClientGUI(String host, int port) {
 		super();
+		client = new GameClient(host, port);
 		this.setTitle("Checkers");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		//set container
-		CardLayout cardLayout = new CardLayout();
-		JPanel container = new JPanel(cardLayout);
+		try {
+			client.openConnection();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//set controls
-		InitialControl ic = new InitialControl(container, client);
 		HomeControl hc = new HomeControl(container, client);
+		LoginControl lc = new LoginControl(container, client);
+		CreateAccountControl cac = new CreateAccountControl(container, client);
 		
 		//set panels
-		JPanel initialPanel = new InitialPanel(ic);
 		JPanel homePanel = new HomePanel(hc);
+		JPanel LoginPanel = new LoginPanel(lc);
+		JPanel createAccountPanel = new CreateAccountPanel(cac);
+		
+		client.setCreateAccountControl(cac);
+		client.setLoginControl(lc);
 		
 		//adding panels to container
-		container.add(initialPanel, "1");
-		container.add(homePanel, "2");
+		container.add(homePanel, "1");
+		container.add(LoginPanel, "2");
+		container.add(createAccountPanel, "3");
 		
 		cardLayout.show(container, "1");
 		
@@ -41,6 +58,8 @@ public class GameClientGUI extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		new GameClientGUI();
+		String host = args[0];
+		int port = Integer.parseInt(args[1]);
+		new GameClientGUI(host, port);
 	}
 }
