@@ -12,6 +12,9 @@ public class BoardControl implements ActionListener{
 	private JPanel container;
 	private GameClient client;
 	
+	private GameBoard gameBoard; // This is the game state	-elijah
+	
+	
 	//this boolean will be used to see whether or not a piece was already selected before
 	private boolean selected;
 	
