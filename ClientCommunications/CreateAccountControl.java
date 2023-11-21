@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.swing.JPanel;
 
 import ClientUserInterface.CreateAccountPanel;
+import ClientUserInterface.GameBoardPanel;
 import OCSF.GameClient;
 import ServerCommunication.CreateAccountData;
 
@@ -43,5 +44,9 @@ public class CreateAccountControl implements ActionListener{
 	public void createFailed(String message) {
 		CreateAccountPanel cap = (CreateAccountPanel) container.getComponent(2);
 		cap.getServerResponse().setText(message);
+	}
+	public void showWait() {
+		CardLayout cardLayout = (CardLayout) container.getLayout();
+		cardLayout.show(container, "4");
 	}
 }

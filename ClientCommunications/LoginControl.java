@@ -43,5 +43,9 @@ public class LoginControl implements ActionListener{
 		LoginPanel loginPanel = (LoginPanel) container.getComponent(1);
 		loginPanel.getServerResponse().setText(message);
 	}
+	public void showWait() {
+		CardLayout cardLayout = (CardLayout) container.getLayout();
+		cardLayout.show(container, "4");
+	}
 	
 }

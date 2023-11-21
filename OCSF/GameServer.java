@@ -7,7 +7,9 @@ import Database.Database;
 import ServerCommunication.CreateAccountData;
 import ServerCommunication.GameInstance;
 import ServerCommunication.InvalidLogin;
+import ServerCommunication.InvalidSelection;
 import ServerCommunication.LoginData;
+import ServerCommunication.PieceSelection;
 import ServerCommunication.PlayerQueue;
 import ServerCommunication.UnsuccessfulCreateAccount;
 
@@ -25,10 +27,10 @@ public class GameServer extends AbstractServer {
 	private Database database;
 	
 	//maybe change
-	private PlayerQueue playerQueue;
+	private PlayerQueue playerQueue = new PlayerQueue();
 	
 	//not sure about this one but its an idea
-	private ArrayList<GameInstance> games;
+	private ArrayList<GameInstance> games = new ArrayList<GameInstance>();
 	//not sure about this one
 	private String message;
 
@@ -89,9 +91,9 @@ public class GameServer extends AbstractServer {
 			LoginData data = (LoginData) arg0;
 			if(validLogin(data)) {
 				//if the login data is correct, we go to the managePlayer function
-				managePlayer(arg1);
 				try {
 					arg1.sendToClient(data);
+					managePlayer(arg1);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -110,9 +112,9 @@ public class GameServer extends AbstractServer {
 		if(arg0 instanceof CreateAccountData) {
 			CreateAccountData data = (CreateAccountData) arg0;
 			if(validCreateAccount(data)) {
-				managePlayer(arg1);
 				try {
 					arg1.sendToClient(data);
+					managePlayer(arg1);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -121,6 +123,27 @@ public class GameServer extends AbstractServer {
 			else {
 				try {
 					arg1.sendToClient(new UnsuccessfulCreateAccount(message));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		if(arg0 instanceof PieceSelection) {
+			PieceSelection selection = (PieceSelection) arg0;
+			if(validSelection(selection, arg1)) {
+				//if the selection is valid, we send this back to the client, causing the client to select the move location
+				try {
+					arg1.sendToClient(selection);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else {
+				//if the selection is invalid, we have to show the message
+				try {
+					arg1.sendToClient(new InvalidSelection(message));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -167,12 +190,35 @@ public class GameServer extends AbstractServer {
 		//adds player to a queue
 		playerQueue.addPlayer(player);
 		System.out.println("Player added to the Queue.");
+		System.out.println(playerQueue.size());
 		
 		//if there are more than 2 players in the queue, the players are removed and their connection is saved
 		if(playerQueue.size() > 1) {
 			ConnectionToClient player1 = playerQueue.removePlayer();
+			System.out.println("Player removed from queue");
 			ConnectionToClient player2 = playerQueue.removePlayer();
-			System.out.println("Game started between " + player1.getId() + " and " + player2.getId() + ".");
+			System.out.println("Player removed from queue");
+			//start a new Game instance between the 2 players
+			GameInstance game = new GameInstance();
+			//add this game instance to collection of games
+			game.setPlayer1(player1);
+			game.setPlayer2(player2);
+			games.add(game);
+			System.out.println("Game started between 2 players");
+			
+			//send both players to the board panel
+			try {
+				player1.sendToClient(new String("Ready"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				player2.sendToClient(new String("Ready"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -224,12 +270,44 @@ public class GameServer extends AbstractServer {
 	
 	private GameInstance findClientGameInstance(ConnectionToClient client) {
 		for(GameInstance game : games) {
-			if(game.getPlayer1() == client || game.getPlayer2() == client) {
+			if(game.getPlayer1().getId() == client.getId() || game.getPlayer2().getId() == client.getId()) {
 				return game;
 			}
 		}
 		//no game instance was found
 		return null;
 	}
-
+	public boolean validSelection(PieceSelection selection, ConnectionToClient client) {
+		//this is going to be used to validate the selection for the player
+		
+		//first thought is to see whether this client is player 1 or player 2 for the game
+		GameInstance game = findClientGameInstance(client);
+		
+		//checks to see if this client is player 1
+		if(client.getId() == game.getPlayer1().getId()) {
+			//if the client is player1, they can only select P1 or K1 pieces
+			if(selection.getPieceName().equals("P1") || selection.getPieceName().equals("K1")) {
+				return true;
+			}
+			//if the player selects another players piece or click space without a piece
+			else {
+				message = "Select your piece to move";
+			}
+		}
+		
+		//check to see if the client is player 2
+		else if(client.getId() == game.getPlayer2().getId()) {
+			//if the client is player2, they can only select P2 or K2 pieces
+			if(selection.getPieceName().equals("P2") || selection.getPieceName().equals("K2")) {
+				return true;
+			}
+			else {
+				message = "Select your piece to move";
+			}
+		}
+		return false;
+	}
+	private void startGame() {
+		
+	}
 }

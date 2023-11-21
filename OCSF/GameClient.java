@@ -7,7 +7,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import ClientCommunications.CreateAccountControl;
+import ClientCommunications.GameBoardControl;
 import ClientCommunications.LoginControl;
+import ClientCommunications.WaitingControl;
+import ServerCommunication.CreateAccountData;
 import ServerCommunication.InvalidLogin;
 import ServerCommunication.LoginData;
 import ServerCommunication.UnsuccessfulCreateAccount;
@@ -17,6 +20,8 @@ public class GameClient extends AbstractClient {
 	//controllers for the GUIS
 	private LoginControl loginControl;
 	private CreateAccountControl createAccountControl;
+	private WaitingControl waitingControl;
+	private GameBoardControl gameBoardControl;
 	
 	public GameClient(String host, int port) {
 		super(host, port);
@@ -27,12 +32,12 @@ public class GameClient extends AbstractClient {
 	}
 	
 	protected void handleMessageFromServer(Object arg0) {
-		//might need a loginSuccess class so server can send that? not sure what the class would contain tho so for now server just
-		//sends the login data back to the client
 		if(arg0 instanceof LoginData) {
-			System.out.println("Successful Login");
+			loginControl.showWait();
 		}
-		
+		if(arg0 instanceof CreateAccountData) {
+			createAccountControl.showWait();
+		}
 		if(arg0 instanceof InvalidLogin) {
 			InvalidLogin invalidLogin = (InvalidLogin) arg0;
 			loginControl.loginFailed(invalidLogin.getErrorMessage());
@@ -40,6 +45,13 @@ public class GameClient extends AbstractClient {
 		if(arg0 instanceof UnsuccessfulCreateAccount) {
 			UnsuccessfulCreateAccount unsuccessfulCreateAccount = (UnsuccessfulCreateAccount) arg0;
 			createAccountControl.createFailed(unsuccessfulCreateAccount.getErrorMessage());
+		}
+		//once the client gets the board object, it enables the board for the client and changes the UI to match the board object
+		if(arg0 instanceof String) {
+			String ready = (String) arg0;
+			if(ready.equals("Ready")) {
+				waitingControl.showBoard();
+			}
 		}
 	}
 	
@@ -53,5 +65,10 @@ public class GameClient extends AbstractClient {
 	public void setLoginControl(LoginControl lc) {
 		this.loginControl = lc;
 	}
-	
+	public void setWaitingControl(WaitingControl wc) {
+		this.waitingControl = wc;
+	}
+	public void setGameBoardControl(GameBoardControl gbc) {
+		this.gameBoardControl = gbc;
+	}
 }

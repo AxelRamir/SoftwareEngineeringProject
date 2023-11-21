@@ -9,10 +9,9 @@ public class GameInstance implements Serializable{
 	private ConnectionToClient player2;
 	
 	//maybe board class here
-	private String board[][];
+	private String[][] board;
 	
 	public GameInstance() {
-		
 	}
 	
 	public void setPlayer1(ConnectionToClient player1) {
@@ -30,12 +29,6 @@ public class GameInstance implements Serializable{
 		return player2;
 	}
 	
-	public String[][] getBoard(){
-		return board;
-	}
-	public void setBoard() {
-		//methods and calculations used to set the board
-	}
 	
 	//function used to check if the response from the client exists in this game
 	public boolean containsClient(ConnectionToClient client) {
@@ -46,4 +39,5 @@ public class GameInstance implements Serializable{
 			return false;
 		}
 	}
-}
+	
+}	
