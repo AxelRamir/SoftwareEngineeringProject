@@ -20,6 +20,9 @@ public class GameBoardPanel extends JPanel{
 	private JPanel north;
 	private JPanel south;
 	
+	private JLabel teamLabel;
+	private JButton quitButton;
+	
 
 	public GameBoardPanel(GameBoardControl gameBoardControl) {
 		
@@ -27,7 +30,6 @@ public class GameBoardPanel extends JPanel{
 		this.gameBoardControl = gameBoardControl; 
 		
 		this.add(getGameBoardPanel());
-		
 		
 		
 
@@ -104,8 +106,15 @@ public class GameBoardPanel extends JPanel{
 		
 		north.add(gameGrid);
 		
-		JButton quitButton = new JButton("Quit");
+		quitButton = new JButton("Leave Game");
+		teamLabel = new JLabel("");
+		
+		
 		south.add(quitButton);
+		south.add(Box.createHorizontalStrut(30));
+		south.add(new JLabel("You are: "));
+		south.add(teamLabel);
+		
 		
 		boardPanel.add(north, BorderLayout.NORTH);
 		boardPanel.add(south, BorderLayout.SOUTH);
@@ -115,6 +124,10 @@ public class GameBoardPanel extends JPanel{
 		return boardPanel;
 	}
 	
+	
+	public JLabel getTeamLabel() {
+		return teamLabel;
+	}
 	
 	
 	/*test

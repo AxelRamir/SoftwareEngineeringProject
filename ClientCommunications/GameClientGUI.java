@@ -47,6 +47,9 @@ public class GameClientGUI extends JFrame{
 		JPanel waitingPanel = new WaitingPanel(wc);
 		JPanel gameBoardPanel = new GameBoardPanel(gbc);
 		
+		//so the team color label can be set
+		gbc.setTeamLabel(((GameBoardPanel) gameBoardPanel).getTeamLabel());
+		
 		client.setCreateAccountControl(cac);
 		client.setLoginControl(lc);
 		client.setWaitingControl(wc);
@@ -63,7 +66,7 @@ public class GameClientGUI extends JFrame{
 		
 		this.add(container);
 		
-		this.setSize(600, 600);
+		this.setSize(650, 700);
 		this.setVisible(true);
 	}
 	

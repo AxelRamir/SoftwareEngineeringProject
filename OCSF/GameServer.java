@@ -208,12 +208,14 @@ public class GameServer extends AbstractServer {
 			
 			//send both players to the board panel
 			try {
+				player1.sendToClient(new String("Red"));
 				player1.sendToClient(new String("Ready"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			try {
+				player2.sendToClient(new String ("Black"));
 				player2.sendToClient(new String("Ready"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

@@ -23,6 +23,8 @@ public class GameClient extends AbstractClient {
 	private WaitingControl waitingControl;
 	private GameBoardControl gameBoardControl;
 	
+	private String team;
+	
 	public GameClient(String host, int port) {
 		super(host, port);
 	}
@@ -48,9 +50,18 @@ public class GameClient extends AbstractClient {
 		}
 		//once the client gets the board object, it enables the board for the client and changes the UI to match the board object
 		if(arg0 instanceof String) {
-			String ready = (String) arg0;
-			if(ready.equals("Ready")) {
-				waitingControl.showBoard();
+			
+			if(arg0.equals("Red") || arg0.equals("Black")) {
+				team = arg0.toString();
+				gameBoardControl.setTeam(team);
+			}
+			
+			
+			else {
+				String ready = (String) arg0;
+				if(ready.equals("Ready")) {
+					waitingControl.showBoard();
+				}
 			}
 		}
 	}
@@ -71,4 +82,7 @@ public class GameClient extends AbstractClient {
 	public void setGameBoardControl(GameBoardControl gbc) {
 		this.gameBoardControl = gbc;
 	}
+	
+	
+	
 }
