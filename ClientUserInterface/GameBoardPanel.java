@@ -69,28 +69,12 @@ public class GameBoardPanel extends JPanel{
 					}
 					else {
 						gameBoard.getSquare(r, c).setBackground(Color.white);
-						
-						if (r < 3) {
-							gameBoard.getSquare(r, c).setRed();
-						}
-						else if (r > 4 ){
-							gameBoard.getSquare(r, c).setBlack();
-						}
-						
 					}
 				
 				}
 				else {
 					if ((c + 1) % 2 == 1) {
 						gameBoard.getSquare(r, c).setBackground(Color.white);
-						
-						if (r < 3) {
-							gameBoard.getSquare(r, c).setRed();
-						}
-						else if (r > 4){
-							gameBoard.getSquare(r, c).setBlack();
-						}
-						
 					}
 					else {
 						gameBoard.getSquare(r, c).setBackground(Color.black);

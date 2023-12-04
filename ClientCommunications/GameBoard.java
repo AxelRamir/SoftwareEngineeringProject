@@ -5,7 +5,9 @@
 
 package ClientCommunications;
 
-import ClientUserInterface.BoardSquare;
+import java.awt.Color;
+
+import ClientCommunications.BoardSquare;
 import ClientUserInterface.GameBoardPanel;
 
 public class GameBoard implements java.io.Serializable {
@@ -23,7 +25,36 @@ public class GameBoard implements java.io.Serializable {
 			}
 		}
 		
-		
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++) {
+				
+			//----sets pieces on white squares------------
+				if ((r + 1) % 2 == 0) {
+					
+					if ((c + 1) % 2 == 0) {
+						if (r < 3) {
+							getSquare(r, c).setTeam("Red");
+						}
+						else if (r > 4 ){
+							getSquare(r, c).setTeam("Black");
+						}
+
+					}
+				
+				}
+				else {
+					if ((c + 1) % 2 == 1) {
+						if (r < 3) {
+							getSquare(r, c).setTeam("Red");
+						}
+						else if (r > 4){
+							getSquare(r, c).setTeam("Black");
+						}
+						
+					}
+				}
+			}
+		}
 		
 	}
 	

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.font.*;
 
-import ClientUserInterface.BoardSquare;
+import ClientCommunications.BoardSquare;
 import ClientUserInterface.GameBoardPanel;
 import OCSF.GameClient;
 
