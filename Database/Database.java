@@ -12,60 +12,63 @@ public class Database {
 	private ResultSet rs;
 	private ResultSetMetaData rmd;
 	
-	public Database() {
+	public void setConnection(String fn) {
 		Properties prop = new Properties();
 		FileInputStream fis;
 		try {
-			fis = new FileInputStream("Database/db.properties");
+			fis = new FileInputStream(fn);
 			prop.load(fis);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String url = prop.getProperty("url");
 		String user = prop.getProperty("user");
 		String pass = prop.getProperty("password");
-		
 
 		try {
 			conn = DriverManager.getConnection(url, user, pass);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			e.getMessage();
 		}
 	}
 	
-	public ArrayList<String>query(String query){
-		ArrayList<String>list = new ArrayList<String>();
+	public Connection getConnection() {return conn;}
+	
+	
+	
+	public ArrayList<String> query(String query) {
+		// Add your code here
+		ArrayList<String> list = new ArrayList<String>();
 		try {
-			//1. Create a statement from connection object
+			// 1. Create a statement from connection object
 			stmt = conn.createStatement();
-			
-			//2. Execute query on statement
+
+			// 2. Execute Query on the stmt
 			rs = stmt.executeQuery(query);
-			
-			//3. get the # of columns from the ResultSet
+
+			// 3. get the # of columns from the ResultSet
 			rmd = rs.getMetaData();
 			int noOfColumns = rmd.getColumnCount();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				String record = "";
-				
-				for(int i = 0; i < noOfColumns; i++) {
+
+				for (int i = 0; i < noOfColumns; i++) {
 					String field = rs.getString(i + 1);
 					record += field;
-					if(i < noOfColumns - 1) {
+					if (i < noOfColumns - 1) {
 						record += ",";
 					}
 					list.add(record);
 				}
 			}
-			if(list.size() > 0) {
+
+			// check for the ResultSet
+			if (list.size() > 0) {
 				return list;
-			}
-			else{
+			} else {
 				return null;
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

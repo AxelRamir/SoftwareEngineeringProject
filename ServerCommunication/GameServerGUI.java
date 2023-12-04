@@ -108,6 +108,7 @@ public class GameServerGUI extends JFrame
     server.setLog(log);
     server.setStatus(status);
     Database database = new Database();
+    database.setConnection("Database/db.properties");
     server.setDatabase(database);
     //work in progress
     PlayerQueue playerQueue = new PlayerQueue();
