@@ -8,7 +8,7 @@ package ClientCommunications;
 import ClientUserInterface.BoardSquare;
 import ClientUserInterface.GameBoardPanel;
 
-public class GameBoard {
+public class GameBoard implements java.io.Serializable {
 	
 	
 	BoardSquare[][] boardSquares = new BoardSquare[8][8];
@@ -37,6 +37,8 @@ public class GameBoard {
 	
 	// @Axel, The pieces already get set to red or black in GameBoardPanel
 	// Wasn't sure if you had something specific in mind for this so I left it here
+	
+	// we might need this serverside actually -AL
 	
 	/*
 	public void defineBoardSquares(String[][] board) {

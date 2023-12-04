@@ -1,24 +1,12 @@
 package ServerCommunication;
 
-public class PieceSelection {
-	private String pieceName;
-	private int startingX;
-	private int startingY;
+public class PieceSelection implements java.io.Serializable {
+	private int fromX, fromY, toX, toY;
 	
-	public PieceSelection(String pieceName, int startingX, int startingY) {
-		this.pieceName = pieceName;
-		this.startingX = startingX;
-		this.startingY = startingY;
-	}
-	
-	public String getPieceName() {
-		return pieceName;
-	}
-	
-	public int getStartingX() {
-		return startingX;
-	}
-	public int getStartingY() {
-		return startingY;
+	public PieceSelection(int fromX, int fromY, int toX, int toY) {
+		this.fromX = fromX;
+		this.fromY = fromY;
+		this.toX = toX;
+		this.toY = toY;
 	}
 }

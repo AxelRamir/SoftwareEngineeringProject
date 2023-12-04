@@ -15,7 +15,7 @@ import ServerCommunication.UnsuccessfulCreateAccount;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.*;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -131,23 +131,15 @@ public class GameServer extends AbstractServer {
 		}
 		if(arg0 instanceof PieceSelection) {
 			PieceSelection selection = (PieceSelection) arg0;
-			if(validSelection(selection, arg1)) {
-				//if the selection is valid, we send this back to the client, causing the client to select the move location
-				try {
-					arg1.sendToClient(selection);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else {
-				//if the selection is invalid, we have to show the message
-				try {
-					arg1.sendToClient(new InvalidSelection(message));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			GameInstance game = findClientGameInstance(arg1);
+			boolean valid = game.tryMovePiece(arg1, selection);
+			try {
+				if (valid)
+					arg1.sendToClient(game.getGameBoard());
+				else
+					arg1.sendToClient(game.getSelectionError(arg1));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -278,38 +270,5 @@ public class GameServer extends AbstractServer {
 		}
 		//no game instance was found
 		return null;
-	}
-	public boolean validSelection(PieceSelection selection, ConnectionToClient client) {
-		//this is going to be used to validate the selection for the player
-		
-		//first thought is to see whether this client is player 1 or player 2 for the game
-		GameInstance game = findClientGameInstance(client);
-		
-		//checks to see if this client is player 1
-		if(client.getId() == game.getPlayer1().getId()) {
-			//if the client is player1, they can only select P1 or K1 pieces
-			if(selection.getPieceName().equals("P1") || selection.getPieceName().equals("K1")) {
-				return true;
-			}
-			//if the player selects another players piece or click space without a piece
-			else {
-				message = "Select your piece to move";
-			}
-		}
-		
-		//check to see if the client is player 2
-		else if(client.getId() == game.getPlayer2().getId()) {
-			//if the client is player2, they can only select P2 or K2 pieces
-			if(selection.getPieceName().equals("P2") || selection.getPieceName().equals("K2")) {
-				return true;
-			}
-			else {
-				message = "Select your piece to move";
-			}
-		}
-		return false;
-	}
-	private void startGame() {
-		
 	}
 }
