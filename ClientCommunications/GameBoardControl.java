@@ -7,26 +7,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.EventListener;
-import java.awt.event.AWTEventListener;
 
 import javax.swing.JPanel;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import java.awt.font.*;
 
+import ServerCommunication.PieceSelection;
 import ClientCommunications.BoardSquare;
 import ClientUserInterface.GameBoardPanel;
 import OCSF.GameClient;
 
-public class GameBoardControl implements ActionListener, AWTEventListener{
+
+public class GameBoardControl implements ActionListener{
 	
 	private JPanel container;
 	private GameClient client;
 	private JLabel teamLabel;
 	
 	private GameBoard gameBoard; // This is the game state	-elijah
-	
-	private boolean selected;
 	private String team;
+	
+	private boolean selected = false;
+	private BoardSquare selectedPiece; //used in piece selection logic
+	
 	
 	public GameBoardControl(JPanel container, GameClient client) {
 		this.container = container;
@@ -35,6 +39,8 @@ public class GameBoardControl implements ActionListener, AWTEventListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		
 		if(e.getActionCommand() == "Leave Game") {
 			//if the player chooses to leave the game, the connection is ended
 			try {
@@ -45,7 +51,54 @@ public class GameBoardControl implements ActionListener, AWTEventListener{
 			}
 		}
 		else {
-			BoardSquare square = (BoardSquare) e.getSource();
+			
+			BoardSquare clickedSquare = (BoardSquare) e.getSource();
+			int fromX, fromY, toX, toY;
+			
+			// if a piece is not already selected and it's a click-able square and it's the right color..
+			if (!selected && clickedSquare.hasPiece() && clickedSquare.getTeam().equals(team.toLowerCase())) {
+				
+				System.out.println("selected " + clickedSquare.getRow() + "," + clickedSquare.getColumn()); //testing
+				
+				selected = true;
+				selectedPiece = clickedSquare;
+				
+				clickedSquare.setBackground(Color.lightGray); //highlight
+				}
+			
+			// if the clicked piece is same as previously selected piece, deselect.
+			else if (selected && clickedSquare == selectedPiece) {
+				System.out.println("deselect");
+				
+				selected = false;
+				clickedSquare.setBackground(Color.white);
+				
+			}
+			
+			// if the clicked piece is a white square and is not already occupied..
+			else if (selected && clickedSquare.isClickable() && !clickedSquare.hasPiece()) {
+				System.out.println("sent coordinates");
+				
+				fromX = selectedPiece.getRow();
+				fromY = selectedPiece.getColumn();
+				toX = clickedSquare.getRow();
+				toY = clickedSquare.getColumn();
+				
+				PieceSelection selected = new PieceSelection(fromX, fromY, toX, toY);
+				
+				try {
+					client.sendToServer(selected);
+				} catch (IOException e1) {
+					
+					e1.printStackTrace();
+				}
+				
+				this.selected = false;
+				selectedPiece.setBackground(Color.white);
+				
+			}
+			
+			
 			
 		}
 	}
@@ -68,11 +121,6 @@ public class GameBoardControl implements ActionListener, AWTEventListener{
 	}
 	
 
-	@Override
-	public void eventDispatched(AWTEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	
 	

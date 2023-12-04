@@ -22,9 +22,58 @@ public class GameBoard implements java.io.Serializable {
 			for (int c = 0; c < 8; c++) {
 				boardSquares[r][c] = new BoardSquare(r, c);	// initialize
 				boardSquares[r][c].setEnabled(true); // enable
+				
+if ((r + 1) % 2 == 0) {
+					
+					
+					if ((c + 1) % 2 == 1) {
+						getSquare(r, c).setBackground(Color.black);
+						getSquare(r, c).setClickable(false);
+					}
+					else {
+						getSquare(r, c).setBackground(Color.white);
+						getSquare(r, c).setClickable(true);
+						
+						if (r < 3) {
+							getSquare(r, c).setHasPiece(true);
+							getSquare(r, c).setTeam("red");
+						}
+						else if (r > 4 ){
+							getSquare(r, c).setHasPiece(true);
+							getSquare(r, c).setTeam("black");
+						}
+						
+					}
+				
+				}
+				else {
+					if ((c + 1) % 2 == 1) {
+						getSquare(r, c).setBackground(Color.white);
+						getSquare(r, c).setClickable(true);
+						
+						if (r < 3) {
+							getSquare(r, c).setHasPiece(true);
+							getSquare(r, c).setTeam("red");
+						}
+						else if (r > 4){
+							getSquare(r, c).setHasPiece(true);
+							getSquare(r, c).setTeam("black");
+						}
+						
+
+					}
+					else {
+						getSquare(r, c).setBackground(Color.black);
+						getSquare(r, c).setClickable(false);
+					}
+				}
+				
+				
 			}
 		}
 		
+		
+		/*
 		for (int r = 0; r < 8; r++) {
 			for (int c = 0; c < 8; c++) {
 				
@@ -55,6 +104,7 @@ public class GameBoard implements java.io.Serializable {
 				}
 			}
 		}
+		*/
 		
 	}
 	

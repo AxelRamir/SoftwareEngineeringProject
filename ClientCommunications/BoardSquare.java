@@ -9,9 +9,10 @@ public class BoardSquare extends JButton{
 		
 	private int row;
 	private int column;
-	private boolean hasPiece;
+	private boolean hasPiece = false;
 	private String team = "black"; // this should probably be simply "black" or "red" // making this black by default -AL
 	private boolean isKingPiece;
+	private boolean isClickable;
 	
 	private ImageIcon blackPieceIcon = new ImageIcon("./images/blackpiece.png");
 	private ImageIcon redPieceIcon = new ImageIcon("./images/redpiece.png");
@@ -53,13 +54,21 @@ public class BoardSquare extends JButton{
 		return icon;
 	}
 	
+	public ImageIcon emptySquare() {
+		Image image = emptySquare.getImage();
+		Image newimg = image.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
+		ImageIcon icon = new ImageIcon(newimg);
+		
+		return icon;
+	}
+	
 	
 	
 	// These set the icon that displays the "piece" (red or black circle). --Also sets the team variable--
 	// redundant with setTeam, i'm consolidating this into an "update appearance" method that runs in setTeam and setKing -AL
 	private void updateAppearance() {
 		if (!hasPiece)
-			this.setIcon(emptySquare);
+			this.setIcon(emptySquare());
 		else if (team == "red")
 			this.setIcon(redIcon());
 		else if (team == "black")
@@ -79,17 +88,23 @@ public class BoardSquare extends JButton{
 	
 	public void setHasPiece(boolean hasPiece) {
 		this.hasPiece = hasPiece;
+		
 		updateAppearance();
 	}
 	
 	public void setTeam(String team) {
 		this.team = team;
+		
 		updateAppearance();
 	}
 	
 	public void setKing(boolean isKing) {
 		this.isKingPiece = isKing;
 		updateAppearance();
+	}
+	
+	public void setClickable(boolean isClickable) {
+		this.isClickable = isClickable;
 	}
 	
 	
@@ -109,6 +124,10 @@ public class BoardSquare extends JButton{
 	
 	public String getTeam() {
 		return team;
+	}
+	
+	public boolean isClickable() {
+		return isClickable;
 	}
 	
 	public boolean getIsKing() {return isKingPiece;}

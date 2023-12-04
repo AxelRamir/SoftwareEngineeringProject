@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import ClientCommunications.GameBoardControl;
 import ClientCommunications.GameBoard;
+import ClientCommunications.BoardSquare;
 
 public class GameBoardPanel extends JPanel{
 	
@@ -59,29 +60,10 @@ public class GameBoardPanel extends JPanel{
 				
 				gameBoard.getSquare(r, c).setOpaque(true);
 				gameBoard.getSquare(r, c).setBorderPainted(false);
+				gameBoard.getSquare(r, c).addActionListener(gameBoardControl);
 				
-			//----makes each square black or white and sets pieces------------
-				if ((r + 1) % 2 == 0) {
-					
-					
-					if ((c + 1) % 2 == 1) {
-						gameBoard.getSquare(r, c).setBackground(Color.black);
-					}
-					else {
-						gameBoard.getSquare(r, c).setBackground(Color.white);
-					}
-				
-				}
-				else {
-					if ((c + 1) % 2 == 1) {
-						gameBoard.getSquare(r, c).setBackground(Color.white);
-					}
-					else {
-						gameBoard.getSquare(r, c).setBackground(Color.black);
-					}
-				}
 				gameGrid.add(gameBoard.getSquare(r, c));
-			//--------------------------------------------
+			
 				
 				
 			}
@@ -111,6 +93,10 @@ public class GameBoardPanel extends JPanel{
 	
 	public JLabel getTeamLabel() {
 		return teamLabel;
+	}
+	
+	public GameBoard getBoard() {
+		return gameBoard;
 	}
 	
 	
