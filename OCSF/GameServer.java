@@ -37,7 +37,7 @@ public class GameServer extends AbstractServer {
 	// Constructor for initializing the server with default settings.
 	public GameServer() {
 		super(8300);
-		this.setTimeout(500);
+		this.setTimeout(5000);
 	}
 
 	// Getter that returns whether the server is currently running.
