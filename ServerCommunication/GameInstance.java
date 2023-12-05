@@ -16,6 +16,7 @@ public class GameInstance implements Serializable{
 	private GameBoard board;
 	private InvalidSelection p1LastError, p2LastError;
 	private String turn = "black";
+	private boolean done = false;
 	
 	public GameInstance() {
 		board = new GameBoard();
@@ -25,6 +26,7 @@ public class GameInstance implements Serializable{
 	
 	public boolean tryMovePiece(ConnectionToClient cl, PieceSelection sel) {
 		// TODO tryMovePiece
+		if (done) return false;
 		String team = getTeamOf(cl);
 		if (!turn.equals(team)) {
 			if (cl == player1)
@@ -55,6 +57,8 @@ public class GameInstance implements Serializable{
 					(team.equals("black") && dest.getRow() == 0))
 				dest.setKing(true);
 				
+			// check if either player has won
+			
 			// switch turns if player can't chain capture
 			if (true) {// !checkCanCapture(dest)) {  // hard code this logic for now, too many problems with checkCanCapture
 				if (turn.equals("red")) {
@@ -192,6 +196,30 @@ public class GameInstance implements Serializable{
 			}
 		}
 		return false;
+	}
+	
+	public String checkVictory() {
+		boolean redHasPieces = false;
+		boolean blackHasPieces = false;
+		for (int row=0; row<7; row++) {
+			for (int col=0; col<7; col++) {
+				BoardSquare s = board.getSquare(row, col);
+				if(s.hasPiece() && s.getTeam().equals("red"))
+					redHasPieces = true;
+				if(s.hasPiece() && s.getTeam().equals("black"))
+					blackHasPieces = true;
+			}
+		}
+		if (redHasPieces && blackHasPieces) {
+			return "continue";
+		}
+		else if (redHasPieces) {
+			return "red";
+		}
+		else if (blackHasPieces) {
+			return "black";
+		}
+		return "what the fuck?";
 	}
 	
 	public GameBoard getGameBoard() { return board; }
