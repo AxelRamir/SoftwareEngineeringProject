@@ -16,7 +16,6 @@ public class GameInstance implements Serializable{
 	private GameBoard board;
 	private InvalidSelection p1LastError, p2LastError;
 	private String turn = "black";
-	private boolean done = false;
 	
 	public GameInstance() {
 		board = new GameBoard();
@@ -26,7 +25,6 @@ public class GameInstance implements Serializable{
 	
 	public boolean tryMovePiece(ConnectionToClient cl, PieceSelection sel) {
 		// TODO tryMovePiece
-		if (done) return false;
 		String team = getTeamOf(cl);
 		if (!turn.equals(team)) {
 			if (cl == player1)
@@ -35,12 +33,6 @@ public class GameInstance implements Serializable{
 				p2LastError = new InvalidSelection("It's not your turn.");
 		}
 		else if (validateMove(team, sel)) {
-			try {
-				cl.sendToClient(new InvalidSelection("Turn taken"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			BoardSquare piece = board.getSquare(sel.fromX, sel.fromY);
 			BoardSquare dest = board.getSquare(sel.toX, sel.toY);
 			piece.copyTo(dest);
@@ -57,43 +49,10 @@ public class GameInstance implements Serializable{
 					(team.equals("black") && dest.getRow() == 0))
 				dest.setKing(true);
 				
-			// check if either player has won
-			String victory = checkVictory();
-			if (!victory.equals("continue")) {
-				done = true;
-				try {
-					player1.sendToClient(new InvalidSelection(victory + " wins!"));
-					player2.sendToClient(new InvalidSelection(victory + " wins!"));
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			
 			// switch turns if player can't chain capture
-			if (true) {// !checkCanCapture(dest)) {  // hard code this logic for now, too many problems with checkCanCapture
-				if (turn.equals("red")) {
-					turn = "black";
-					try {
-						player1.sendToClient("blackTurn");
-						player2.sendToClient("blackTurn");
-						player2.sendToClient(new InvalidSelection("Your turn!"));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					
-				}
-				else if (turn.equals("black")) {
-					turn = "red";
-					try {
-						player1.sendToClient("redTurn");
-						player2.sendToClient("redTurn");
-						player1.sendToClient(new InvalidSelection("Your turn!"));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-				}
+			if (!checkCanCapture(dest)) {
+				if (turn.equals("red")) turn = "black";
+				else if (turn.equals("black")) turn = "red";
 			}
 			return true;
 		}
@@ -207,30 +166,6 @@ public class GameInstance implements Serializable{
 			}
 		}
 		return false;
-	}
-	
-	public String checkVictory() {
-		boolean redHasPieces = false;
-		boolean blackHasPieces = false;
-		for (int row=0; row<7; row++) {
-			for (int col=0; col<7; col++) {
-				BoardSquare s = board.getSquare(row, col);
-				if(s.hasPiece() && s.getTeam().equals("red"))
-					redHasPieces = true;
-				if(s.hasPiece() && s.getTeam().equals("black"))
-					blackHasPieces = true;
-			}
-		}
-		if (redHasPieces && blackHasPieces) {
-			return "continue";
-		}
-		else if (redHasPieces) {
-			return "red";
-		}
-		else if (blackHasPieces) {
-			return "black";
-		}
-		return "what the fuck?";
 	}
 	
 	public GameBoard getGameBoard() { return board; }

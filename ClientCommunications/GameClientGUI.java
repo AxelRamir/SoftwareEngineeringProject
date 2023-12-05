@@ -48,9 +48,7 @@ public class GameClientGUI extends JFrame{
 		GameBoardPanel gameBoardPanel = new GameBoardPanel(gbc);
 		
 		//so the team color label can be set
-		gbc.setTeamLabel(gameBoardPanel.getTeamLabel());
-		gbc.setTurnLabel(gameBoardPanel.getTurnLabel());
-		gbc.setStatusLabel(gameBoardPanel.getStatusLabel());
+		gbc.setTeamLabel(((GameBoardPanel) gameBoardPanel).getTeamLabel());
 		gbc.setGameBoard(gameBoardPanel.getBoard());
 		
 		client.setCreateAccountControl(cac);
