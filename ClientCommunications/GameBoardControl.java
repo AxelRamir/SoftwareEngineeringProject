@@ -24,6 +24,7 @@ public class GameBoardControl implements ActionListener{
 	private JPanel container;
 	private GameClient client;
 	private JLabel teamLabel;
+	private JLabel turnLabel;
 	
 	private GameBoard gameBoard;
 	
@@ -114,9 +115,22 @@ public class GameBoardControl implements ActionListener{
 		}
 	}
 	
+	public void setTurn(String whoseTurn) {
+		GameBoardPanel gameBoardPanel = (GameBoardPanel) container.getComponent(4);
+		
+		
+		gameBoardPanel.getTurnLabel().setText(whoseTurn);
+		
+		
+	}
+	
 	
 	public void setTeamLabel(JLabel teamLabel) {
 		this.teamLabel = teamLabel;	
+	}
+	
+	public void setTurnLabel(JLabel turnLabel) {
+		this.turnLabel = turnLabel;
 	}
 	
 	public void setGameBoard(GameBoard gameBoard) {

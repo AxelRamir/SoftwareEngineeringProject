@@ -51,8 +51,26 @@ public class GameInstance implements Serializable{
 				
 			// switch turns if player can't chain capture
 			if (!checkCanCapture(dest)) {
-				if (turn.equals("red")) turn = "black";
-				else if (turn.equals("black")) turn = "red";
+				if (turn.equals("red")) {
+					turn = "black";
+					try {
+						player1.sendToClient("blackTurn");
+						player2.sendToClient("blackTurn");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+				else if (turn.equals("black")) {
+					turn = "red";
+					try {
+						player1.sendToClient("redTurn");
+						player2.sendToClient("redTurn");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+				}
 			}
 			return true;
 		}

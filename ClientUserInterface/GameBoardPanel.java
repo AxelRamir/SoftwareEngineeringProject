@@ -21,8 +21,12 @@ public class GameBoardPanel extends JPanel{
 	private JPanel north;
 	private JPanel south;
 	
-	private JLabel teamLabel;
 	private JButton quitButton;
+	private JLabel teamLabel;
+	private JLabel turnLabel;
+	private JLabel statusLabel;
+	
+	
 	
 
 	public GameBoardPanel(GameBoardControl gameBoardControl) {
@@ -74,12 +78,21 @@ public class GameBoardPanel extends JPanel{
 		
 		quitButton = new JButton("Leave Game");
 		teamLabel = new JLabel("");
+		turnLabel = new JLabel("");
+		statusLabel = new JLabel("Connected");
+		statusLabel.setForeground(Color.green);
 		
 		
 		south.add(quitButton);
 		south.add(Box.createHorizontalStrut(30));
 		south.add(new JLabel("You are: "));
 		south.add(teamLabel);
+		south.add(Box.createHorizontalStrut(30));
+		south.add(turnLabel);
+		south.add(Box.createHorizontalStrut(30));
+		south.add(new JLabel("Status: "));
+		south.add(statusLabel);
+		
 		
 		
 		boardPanel.add(north, BorderLayout.NORTH);
@@ -90,6 +103,14 @@ public class GameBoardPanel extends JPanel{
 		return boardPanel;
 	}
 	
+	
+	public JLabel getStatusLabel() {
+		return statusLabel;
+	}
+	
+	public JLabel getTurnLabel() {
+		return turnLabel;
+	}
 	
 	public JLabel getTeamLabel() {
 		return teamLabel;
