@@ -90,4 +90,16 @@ public class LoginPanel extends JPanel{
 	public JTextField getPasswordField() {
 		return passwordField;
 	}
+	public JButton getSubmitButton() {
+		return submitButton;
+	}
+	public JButton getBackButton() {
+		return backButton;
+	}
+	public void setusernameField(String username) {
+		usernameField.setText(username);
+	}
+	public void setPasswordField(String password) {
+		passwordField.setText(password);
+	}
 }

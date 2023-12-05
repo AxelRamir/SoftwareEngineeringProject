@@ -1,4 +1,4 @@
-package Database;
+package Testing;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysql.*;
+
+import Database.Database;
 
 public class DatabaseTest {
 	String[] users = {"jsmith@uca.edu","msmith@uca.edu","tjones@yahoo.com","jjones@yahoo.com"};

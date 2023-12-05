@@ -14,12 +14,12 @@ import ServerCommunication.LoginData;
 public class LoginControl implements ActionListener{
 	private JPanel container;
 	private GameClient client;
+	private LoginData data;
 	
 	public LoginControl(JPanel container, GameClient client) {
 		this.container = container;
 		this.client = client;
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		LoginPanel loginPanel = (LoginPanel) container.getComponent(1);
@@ -27,12 +27,10 @@ public class LoginControl implements ActionListener{
 		if(e.getActionCommand() == "Submit") {
 			String username = loginPanel.getUsernameField().getText();
 			String password = loginPanel.getPasswordField().getText();
-			LoginData data = new LoginData(username, password);
+			data = new LoginData(username, password);
 			try {
 				client.sendToServer(data);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			}
 		}
 		else if(e.getActionCommand() == "Back") {
@@ -46,6 +44,9 @@ public class LoginControl implements ActionListener{
 	public void showWait() {
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		cardLayout.show(container, "4");
+	}
+	public LoginData getLoginData() {
+		return data;
 	}
 	
 }
