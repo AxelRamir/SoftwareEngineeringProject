@@ -69,9 +69,9 @@ public class BoardSquare extends JButton{
 	private void updateAppearance() {
 		if (!hasPiece)
 			this.setIcon(emptySquare());
-		else if (team == "red")
+		else if (team.equals("red"))
 			this.setIcon(redIcon());
-		else if (team == "black")
+		else if (team.equals("black"))
 			this.setIcon(blackIcon());
 	}
 	
@@ -132,6 +132,11 @@ public class BoardSquare extends JButton{
 	
 	public boolean getIsKing() {return isKingPiece;}
 	
+	public void copyTo(BoardSquare other) {
+		other.setHasPiece(hasPiece());
+		other.setTeam(getTeam());
+		other.setKing(getIsKing());
+	}
 	
 
 }
