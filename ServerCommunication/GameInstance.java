@@ -44,6 +44,11 @@ public class GameInstance implements Serializable{
 						);
 				jumped.setHasPiece(false);
 			}
+			// king if applicable
+			if ((team.equals("red") && dest.getRow() == 7) ||
+					(team.equals("black") && dest.getRow() == 0))
+				dest.setKing(true);
+				
 			// switch turns if player can't chain capture
 			if (!checkCanCapture(dest)) {
 				if (turn.equals("red")) turn = "black";
