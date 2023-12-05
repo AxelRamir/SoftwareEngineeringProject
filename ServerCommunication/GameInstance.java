@@ -58,6 +58,17 @@ public class GameInstance implements Serializable{
 				dest.setKing(true);
 				
 			// check if either player has won
+			String victory = checkVictory();
+			if (!victory.equals("continue")) {
+				done = true;
+				try {
+					player1.sendToClient(new InvalidSelection(victory + " wins!"));
+					player2.sendToClient(new InvalidSelection(victory + " wins!"));
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			
 			// switch turns if player can't chain capture
 			if (true) {// !checkCanCapture(dest)) {  // hard code this logic for now, too many problems with checkCanCapture
