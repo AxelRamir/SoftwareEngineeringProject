@@ -90,7 +90,8 @@ public class GameClient extends AbstractClient {
 		}
 		if(arg0 instanceof InvalidSelection) {
 			InvalidSelection err = (InvalidSelection)arg0;
-			System.out.println(err.getErrorMessage());
+			//System.out.println(err.getErrorMessage());
+			gameBoardControl.setStatus(err.getErrorMessage());
 		}
 	}
 	

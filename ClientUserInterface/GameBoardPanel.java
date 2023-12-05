@@ -80,7 +80,6 @@ public class GameBoardPanel extends JPanel{
 		teamLabel = new JLabel("");
 		turnLabel = new JLabel("");
 		statusLabel = new JLabel("Connected");
-		statusLabel.setForeground(Color.green);
 		
 		
 		south.add(quitButton);
@@ -90,7 +89,7 @@ public class GameBoardPanel extends JPanel{
 		south.add(Box.createHorizontalStrut(30));
 		south.add(turnLabel);
 		south.add(Box.createHorizontalStrut(30));
-		south.add(new JLabel("Status: "));
+		//south.add(new JLabel("Status: "));
 		south.add(statusLabel);
 		
 		
