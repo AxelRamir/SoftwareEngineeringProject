@@ -65,6 +65,7 @@ public class LoginPanelTest {
 		gui.setVisible(true);
 	}
 	
+	//testing to see if we can press the submit button
 	@Test
 	public void testSubmitButton() throws SocketException{
 		LoginPanel panel = (LoginPanel) container.getComponent(1);
@@ -75,6 +76,7 @@ public class LoginPanelTest {
 		assertEquals("Submit button works", text, (String)submit.getActionCommand());
 	}
 	
+	//testing to see if we can press the cancel button
 	@Test
 	public void testCancelButton() throws SocketException{
 		LoginPanel panel = (LoginPanel) container.getComponent(1);
@@ -106,7 +108,7 @@ public class LoginPanelTest {
 	}
 	
 	@Test
-	//test id we can change the text info from the passwordField
+	//test if we can change the text info from the passwordField
 	public void testSetPassword() {
 		LoginPanel panel = (LoginPanel) container.getComponent(1);
 		passwordField = panel.getPasswordField();
@@ -122,10 +124,11 @@ public class LoginPanelTest {
 			
 		}
 	
-		//makes sure the textwas changed
+		//makes sure the text was changed
 		assertEquals("Usernames match", passwords[random], passwordField.getText());
 	}
 	
+	//test to see if we can change the server response
 	@Test
 	public void testSetServerResponse() {
 		LoginPanel panel = (LoginPanel) container.getComponent(1);
