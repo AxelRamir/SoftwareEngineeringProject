@@ -7,11 +7,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import ClientCommunications.CreateAccountControl;
+import ClientCommunications.GameBoard;
 import ClientCommunications.GameBoardControl;
 import ClientCommunications.LoginControl;
 import ClientCommunications.WaitingControl;
+import ClientUserInterface.GameBoardPanel;
 import ServerCommunication.CreateAccountData;
 import ServerCommunication.InvalidLogin;
+import ServerCommunication.InvalidSelection;
 import ServerCommunication.LoginData;
 import ServerCommunication.UnsuccessfulCreateAccount;
 import ocsf.client.AbstractClient;
@@ -23,7 +26,7 @@ public class GameClient extends AbstractClient {
 	private WaitingControl waitingControl;
 	private GameBoardControl gameBoardControl;
 	
-	private String team;
+	public String team;
 	
 	public GameClient(String host, int port) {
 		super(host, port);
@@ -51,7 +54,7 @@ public class GameClient extends AbstractClient {
 		//once the client gets the board object, it enables the board for the client and changes the UI to match the board object
 		if(arg0 instanceof String) {
 			
-			if(arg0.equals("Red") || arg0.equals("Black")) {
+			if(arg0.equals("red") || arg0.equals("black")) {
 				team = arg0.toString();
 				gameBoardControl.setTeam(team);
 			}
@@ -63,6 +66,14 @@ public class GameClient extends AbstractClient {
 					waitingControl.showBoard();
 				}
 			}
+		}
+		if(arg0 instanceof GameBoard) {
+			GameBoard board = (GameBoard) arg0;
+			board.copyTo(gameBoardControl.getGameBoard());
+		}
+		if(arg0 instanceof InvalidSelection) {
+			InvalidSelection err = (InvalidSelection)arg0;
+			System.out.println(err.getErrorMessage());
 		}
 	}
 	

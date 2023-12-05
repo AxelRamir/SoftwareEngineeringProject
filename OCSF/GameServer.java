@@ -134,8 +134,10 @@ public class GameServer extends AbstractServer {
 			GameInstance game = findClientGameInstance(arg1);
 			boolean valid = game.tryMovePiece(arg1, selection);
 			try {
-				if (valid)
-					arg1.sendToClient(game.getGameBoard());
+				if (valid) {
+					game.getPlayer1().sendToClient(game.getGameBoard());
+					game.getPlayer2().sendToClient(game.getGameBoard());
+				}
 				else
 					arg1.sendToClient(game.getSelectionError(arg1));
 			} catch (IOException e) {
@@ -200,14 +202,14 @@ public class GameServer extends AbstractServer {
 			
 			//send both players to the board panel
 			try {
-				player1.sendToClient(new String("Red"));
+				player1.sendToClient(new String("red"));
 				player1.sendToClient(new String("Ready"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			try {
-				player2.sendToClient(new String ("Black"));
+				player2.sendToClient(new String ("black"));
 				player2.sendToClient(new String("Ready"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

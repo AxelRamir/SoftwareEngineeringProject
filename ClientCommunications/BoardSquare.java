@@ -14,11 +14,11 @@ public class BoardSquare extends JButton{
 	private boolean isKingPiece;
 	private boolean isClickable;
 	
-	private ImageIcon blackPieceIcon = new ImageIcon("./images/blackpiece.png");
-	private ImageIcon redPieceIcon = new ImageIcon("./images/redpiece.png");
-	private ImageIcon blackPieceKing = new ImageIcon("./images/blackpiece_king.png");
-	private ImageIcon redPieceKing = new ImageIcon("./images/redpiece_king.png");
-	private ImageIcon emptySquare = new ImageIcon("./images/empty.png");
+	private static final ImageIcon blackPieceIcon = new ImageIcon("./images/blackpiece.png");
+	private static final ImageIcon redPieceIcon = new ImageIcon("./images/redpiece.png");
+	private static final ImageIcon blackPieceKing = new ImageIcon("./images/blackpiece_king.png");
+	private static final ImageIcon redPieceKing = new ImageIcon("./images/redpiece_king.png");
+	private static final ImageIcon emptySquare = new ImageIcon("./images/empty.png");
 	
 	
 	public BoardSquare(int row, int column) {

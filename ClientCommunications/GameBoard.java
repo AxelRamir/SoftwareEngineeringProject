@@ -114,6 +114,15 @@ if ((r + 1) % 2 == 0) {
 		return boardSquares[row][column];
 	}
 	
+	public void copyTo(GameBoard other) {
+		System.out.println("copying game board");
+		for (int row=0; row<8; row++) {
+			for (int col=0; col<8; col++) {
+				getSquare(row, col).copyTo(other.getSquare(row, col));
+			}
+		}
+	}
+	
 
 	
 	// @Axel, The pieces already get set to red or black in GameBoardPanel

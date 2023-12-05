@@ -1,5 +1,6 @@
 package ServerCommunication;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class GameInstance implements Serializable{
 	//maybe board class here
 	private GameBoard board;
 	private InvalidSelection p1LastError, p2LastError;
-	private String turn = "red";
+	private String turn = "black";
 	
 	public GameInstance() {
 		board = new GameBoard();
@@ -33,7 +34,8 @@ public class GameInstance implements Serializable{
 		}
 		else if (validateMove(team, sel)) {
 			BoardSquare piece = board.getSquare(sel.fromX, sel.fromY);
-			piece.copyTo(board.getSquare(sel.toX, sel.toY));
+			BoardSquare dest = board.getSquare(sel.toX, sel.toY);
+			piece.copyTo(dest);
 			piece.setHasPiece(false);
 			if (Math.abs(sel.fromX - sel.toX) == 2) { // diagonal guaranteed
 				BoardSquare jumped = board.getSquare(
@@ -42,8 +44,12 @@ public class GameInstance implements Serializable{
 						);
 				jumped.setHasPiece(false);
 			}
-			if (turn.equals("red")) turn = "black";
-			else if (turn.equals("black")) turn = "red";
+			// switch turns if player can't chain capture
+			if (!checkCanCapture(dest)) {
+				if (turn.equals("red")) turn = "black";
+				else if (turn.equals("black")) turn = "red";
+			}
+			return true;
 		}
 		else {
 			if (cl == player1)
@@ -95,8 +101,11 @@ public class GameInstance implements Serializable{
 		// nothing to see here
 		int row = square.getRow();
 		int col = square.getColumn();
+		boolean redMoves = square.getTeam().equals("red") || square.getIsKing();
+		boolean blackMoves = square.getTeam().equals("black") || square.getIsKing();
+		
 		BoardSquare temp=null;
-		if ((square.getTeam().equals("red") || square.getIsKing()) && (row+2 <= 7)) {
+		if (redMoves && (row+2 <= 7)) {
 			if (col-2 >= 0) {
 				temp = board.getSquare(row+1, col-1);
 				if (temp.hasPiece() && !temp.getTeam().equals(square.getTeam()))
@@ -108,7 +117,7 @@ public class GameInstance implements Serializable{
 					result.add(board.getSquare(row+2, col+2));
 			}
 		}
-		if ((square.getTeam().equals("black") || square.getIsKing()) && (row-2 >= 0)) {
+		if (blackMoves && (row-2 >= 0)) {
 			if (col-2 >= 0) {
 				temp = board.getSquare(row-1, col-1);
 				if (temp.hasPiece() && !temp.getTeam().equals(square.getTeam()))
@@ -122,21 +131,36 @@ public class GameInstance implements Serializable{
 		}
 		
 		if (result.isEmpty()) {
-			if (row-1 >= 0 && col-1 >= 0)
-				temp = board.getSquare(row-1, col-1);
-				if (!temp.hasPiece()) result.add(temp);
-			if (row+1 <= 7 && col-1 >= 0)
-				temp = board.getSquare(row+1, col-1);
-				if (!temp.hasPiece()) result.add(temp);
-			if (row-1 >= 0 && col+1 <= 7)
-				temp = board.getSquare(row-1, col+1);
-				if (!temp.hasPiece()) result.add(temp);
-			if (row+1 <= 7 && col+1 <= 7)
-				temp = board.getSquare(row+1, col+1);
-				if (!temp.hasPiece()) result.add(temp);
+			if (blackMoves) {
+				if (row-1 >= 0 && col-1 >= 0)
+					temp = board.getSquare(row-1, col-1);
+					if (!temp.hasPiece()) result.add(temp);
+				if (row-1 >= 0 && col+1 <= 7)
+					temp = board.getSquare(row-1, col+1);
+					if (!temp.hasPiece()) result.add(temp);
+			}
+			if (redMoves) {
+				if (row+1 <= 7 && col-1 >= 0) 
+					temp = board.getSquare(row+1, col-1);
+					if (!temp.hasPiece()) result.add(temp);
+				if (row+1 <= 7 && col+1 <= 7)
+					temp = board.getSquare(row+1, col+1);
+					if (!temp.hasPiece()) result.add(temp);
+			}
 		}
 		
 		return result;
+	}
+	
+	public boolean checkCanCapture(BoardSquare square) {
+		// this is a cardinal sin. please don't do what i did
+		ArrayList<BoardSquare> opts = checkOptions(square);
+		for (BoardSquare i : opts) {
+			if (Math.abs(i.getRow() - square.getRow()) == 2) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public GameBoard getGameBoard() { return board; }

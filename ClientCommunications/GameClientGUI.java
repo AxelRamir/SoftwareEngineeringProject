@@ -45,10 +45,11 @@ public class GameClientGUI extends JFrame{
 		JPanel LoginPanel = new LoginPanel(lc);
 		JPanel createAccountPanel = new CreateAccountPanel(cac);
 		JPanel waitingPanel = new WaitingPanel(wc);
-		JPanel gameBoardPanel = new GameBoardPanel(gbc);
+		GameBoardPanel gameBoardPanel = new GameBoardPanel(gbc);
 		
 		//so the team color label can be set
 		gbc.setTeamLabel(((GameBoardPanel) gameBoardPanel).getTeamLabel());
+		gbc.setGameBoard(gameBoardPanel.getBoard());
 		
 		client.setCreateAccountControl(cac);
 		client.setLoginControl(lc);

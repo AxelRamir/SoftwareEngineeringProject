@@ -25,8 +25,7 @@ public class GameBoardControl implements ActionListener{
 	private GameClient client;
 	private JLabel teamLabel;
 	
-	private GameBoard gameBoard; // This is the game state	-elijah
-	private String team;
+	private GameBoard gameBoard;
 	
 	private boolean selected = false;
 	private BoardSquare selectedPiece; //used in piece selection logic
@@ -50,13 +49,13 @@ public class GameBoardControl implements ActionListener{
 				e1.printStackTrace();
 			}
 		}
-		else {
+		else if(e.getSource() instanceof BoardSquare) {
 			
 			BoardSquare clickedSquare = (BoardSquare) e.getSource();
 			int fromX, fromY, toX, toY;
 			
 			// if a piece is not already selected and it's a click-able square and it's the right color..
-			if (!selected && clickedSquare.hasPiece() && clickedSquare.getTeam().equals(team.toLowerCase())) {
+			if (!selected && clickedSquare.hasPiece() && clickedSquare.getTeam().equals(client.team.toLowerCase())) {
 				
 				System.out.println("selected " + clickedSquare.getRow() + "," + clickedSquare.getColumn()); //testing
 				
@@ -105,9 +104,9 @@ public class GameBoardControl implements ActionListener{
 	
 	
 	public void setTeam(String team) {
-		this.team = team;
+		client.team = team;
 		teamLabel.setText(team);
-		if (team.equals("Red")) {
+		if (team.equals("red")) {
 			teamLabel.setForeground(Color.red);
 		}
 		else {
@@ -119,6 +118,12 @@ public class GameBoardControl implements ActionListener{
 	public void setTeamLabel(JLabel teamLabel) {
 		this.teamLabel = teamLabel;	
 	}
+	
+	public void setGameBoard(GameBoard gameBoard) {
+		this.gameBoard = gameBoard;
+	}
+	
+	public GameBoard getGameBoard() {return this.gameBoard;}
 	
 
 	
