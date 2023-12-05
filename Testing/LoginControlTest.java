@@ -68,7 +68,7 @@ public class LoginControlTest {
 		gui.setVisible(true);
 	}
 	
-	//testing to make sure the info inputed into gui is the same as the logindata populated by the login control
+	//testing to make sure the info inputed into gui is the same as the login data populated by the login control
 	@Test
 	public void testActionPerformed() {
 		int random = (int) (Math.random() * 3);
