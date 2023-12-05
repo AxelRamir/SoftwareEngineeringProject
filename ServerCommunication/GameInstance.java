@@ -33,6 +33,12 @@ public class GameInstance implements Serializable{
 				p2LastError = new InvalidSelection("It's not your turn.");
 		}
 		else if (validateMove(team, sel)) {
+			try {
+				cl.sendToClient(new InvalidSelection("Turn taken"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			BoardSquare piece = board.getSquare(sel.fromX, sel.fromY);
 			BoardSquare dest = board.getSquare(sel.toX, sel.toY);
 			piece.copyTo(dest);
@@ -50,12 +56,13 @@ public class GameInstance implements Serializable{
 				dest.setKing(true);
 				
 			// switch turns if player can't chain capture
-			if (!checkCanCapture(dest)) {
+			if (true) {// !checkCanCapture(dest)) {  // hard code this logic for now, too many problems with checkCanCapture
 				if (turn.equals("red")) {
 					turn = "black";
 					try {
 						player1.sendToClient("blackTurn");
 						player2.sendToClient("blackTurn");
+						player2.sendToClient(new InvalidSelection("Your turn!"));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -66,6 +73,7 @@ public class GameInstance implements Serializable{
 					try {
 						player1.sendToClient("redTurn");
 						player2.sendToClient("redTurn");
+						player1.sendToClient(new InvalidSelection("Your turn!"));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
