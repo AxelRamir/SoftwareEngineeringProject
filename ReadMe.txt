@@ -19,4 +19,4 @@ Starting the Client GUI (connecting to another computer)
 4. Save the gameClient.bat file and close the file text editor. 
 5. Start the bat file again, the client GUI will open and should automatically establish a connection with the other computer.
 
-Once 2 players are connected to the server, the game of checkers will start.  
+Once 2 players are connected to the server, the game of checkers will start.
