@@ -37,7 +37,7 @@ public class GameServer extends AbstractServer {
 	// Constructor for initializing the server with default settings.
 	public GameServer() {
 		super(8300);
-		this.setTimeout(500);
+		this.setTimeout(5000);
 	}
 
 	// Getter that returns whether the server is currently running.
@@ -204,6 +204,7 @@ public class GameServer extends AbstractServer {
 			try {
 				player1.sendToClient(new String("red"));
 				player1.sendToClient(new String("Ready"));
+				player1.sendToClient("blackTurn");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -211,6 +212,7 @@ public class GameServer extends AbstractServer {
 			try {
 				player2.sendToClient(new String ("black"));
 				player2.sendToClient(new String("Ready"));
+				player2.sendToClient("blackTurn");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

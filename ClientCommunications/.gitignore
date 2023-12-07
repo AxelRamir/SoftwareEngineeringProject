@@ -1,3 +1,9 @@
 /GameBoardState.class
 /GameBoard.class
 /BoardSquare.class
+/CreateAccountControl.class
+/GameBoardControl.class
+/GameClientGUI.class
+/HomeControl.class
+/LoginControl.class
+/WaitingControl.class

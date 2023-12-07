@@ -59,6 +59,23 @@ public class GameClient extends AbstractClient {
 				gameBoardControl.setTeam(team);
 			}
 			
+			else if (arg0.equals("redTurn")) {
+				if (team.equals("red")) {
+					gameBoardControl.setTurn("Your Turn");
+				}
+				else {
+					gameBoardControl.setTurn("Opponent's Turn");
+				}
+			}
+			else if (arg0.equals("blackTurn")) {
+				if (team.equals("black")) {
+					gameBoardControl.setTurn("Your Turn");
+				}
+				else {
+					gameBoardControl.setTurn("Opponent's Turn");
+				}
+			}
+			
 			
 			else {
 				String ready = (String) arg0;
@@ -73,7 +90,8 @@ public class GameClient extends AbstractClient {
 		}
 		if(arg0 instanceof InvalidSelection) {
 			InvalidSelection err = (InvalidSelection)arg0;
-			System.out.println(err.getErrorMessage());
+			//System.out.println(err.getErrorMessage());
+			gameBoardControl.setStatus(err.getErrorMessage());
 		}
 	}
 	
